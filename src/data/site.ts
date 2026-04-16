@@ -1,0 +1,22 @@
+export const siteConfig = {
+  name: 'Sanjay',
+  tagline: 'Elec',
+  email: 'asnjau@plelec.com',
+  phone: '3018229',
+  address: '301 Rayburn St, Lafayette, LA',
+  hours: 'Mon-Fri: 10:00 AM - 5:00 PM',
+  primaryColor: '#df6262',
+  secondaryColor: '#ffcb70',
+  socials: {
+    facebook: '',
+    instagram: '',
+    google: '',
+    twitter: '',
+    yelp: '',
+    linkedin: '',
+  },
+  serviceArea: 'Lafayette, LA',
+  yearFounded: 1947,
+  teamSize: '5-10',
+  mission: 'Make electricity good for everyone',
+};

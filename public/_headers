@@ -1,0 +1,72 @@
+# Cloudflare Pages _headers — Security & Caching Headers
+# https://developers.cloudflare.com/pages/platform/headers/
+
+# === SECURITY HEADERS (all responses) ===
+/*
+  # Prevent clickjacking — site must NEVER be embedded in iframes on other origins
+  X-Frame-Options: SAMEORIGIN
+
+  # Prevent MIME type sniffing — browsers must respect declared Content-Type
+  X-Content-Type-Options: nosniff
+
+  # Legacy XSS protection for older browsers
+  X-XSS-Protection: 1; mode=block
+
+  # Control referrer information — don't leak full URLs to third parties
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Block access to device hardware that a business site never needs
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()
+
+  # Force HTTPS — tell browsers to always use HTTPS for this site
+  # Uncomment the line below after enabling SSL on Cloudflare
+  # Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # Content Security Policy — strict whitelist of allowed resource origins
+  # This is the PRIMARY defense against XSS and injection attacks
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; frame-src 'self' https://unpkg.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'
+
+  # Prevent DNS rebinding attacks
+  X-Permitted-Cross-Domain-Policies: none
+
+# === ANTI-PHISHING HEADERS ===
+# These help identify the site as legitimate and make impersonation harder
+/*
+  # Cross-Origin policies prevent other sites from silently reading our content
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# === CACHING ===
+
+# Cache hashed static assets aggressively (Astro uses content hashes in filenames)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Uploaded images — moderate cache
+/uploads/*
+  Cache-Control: public, max-age=86400
+
+# HTML pages — no cache, always fresh
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# SEO and identity files — moderate cache
+/robots.txt
+  Cache-Control: public, max-age=3600
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+/llms.txt
+  Cache-Control: public, max-age=86400
+/agents.txt
+  Cache-Control: public, max-age=86400
+/security.txt
+  Cache-Control: public, max-age=86400
+
+# Admin CMS — never cache
+/admin/*
+  Cache-Control: no-store, no-cache, must-revalidate
+  X-Frame-Options: DENY
+
+# Well-known security — never cache
+/.well-known/*
+  Cache-Control: no-cache, no-store, must-revalidate

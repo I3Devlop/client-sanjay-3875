@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+const page = await getEntry('pages', 'home');
+const { Content } = await page.render();
+---
+
+<BaseLayout title={page.data.seoTitle} description={page.data.seoDescription}>
+  <Content />
+</BaseLayout>
